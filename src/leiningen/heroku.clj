@@ -40,11 +40,15 @@
         (HttpClientConnection.)
         (HerokuAPI/with))))
 
-(defn app-api []
+(defn current-app-name []
   ;; TODO: depends on current directory; should we pass project args around?
-  (let [git-config (slurp (io/file ".git/config"))
-        [_ app-name] (re-find #"git@heroku.com:(.+).git" git-config)]
-    (.app (api) app-name)))
+  (->> (io/file "/home/phil/src/clojars" ".git/config")
+       slurp
+       (re-find #"git@heroku.com:(.+).git")
+       second))
+
+(defn app-api []
+  (.app (api) (current-app-name)))
 
 (defn ^{:no-project-needed true} heroku
   "Manage Heroku apps."
@@ -54,6 +58,7 @@
         subtask (ns-resolve (symbol command-ns) (symbol command))]
     (try
       ;; TODO: help
+      ;; TODO: accept --app flag when not in project dir
       (apply subtask args)
       (catch Exception e
         (abort (.getMessage e))))))

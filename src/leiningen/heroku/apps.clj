@@ -1,31 +1,35 @@
 (ns leiningen.heroku.apps
-  (:require [leiningen.heroku :as heroku])
+  (:require [clojure.java.shell]
+            [clojure.java.browse :as browse]
+            [leiningen.heroku :as heroku])
   (:import (com.heroku.api.command.app AppList)
            (com.heroku.api Heroku$Stack)))
 
-(defn create [name]
-  (-> (heroku/api) (.newapp Heroku$Stack/Cedar name)))
-
 (defn apps:create [name]
-  (let [response (create name)]
+  (let [response (-> (heroku/api) (.newapp Heroku$Stack/Cedar name))]
     (println "Created app" (.getAppName response))))
 
-(defn apps:destroy [])
+(defn apps:destroy []
+  (.destroy (heroku/app-api))
+  (println "Deleted app" (heroku/current-app-name)))
 
 (defn- space-key [k longest-key]
   (apply str k ": " (repeat (- longest-key (count k)) " ")))
 
 (defn apps:info []
-  (let [api (heroku/app-api)
-        info (.info api)
+  (let [info (.info (heroku/app-api))
         longest-key (apply max (map count (keys info)))]
-    (println "==" (.getAppName api))
+    (println "==" (heroku/current-app-name))
     (doseq [[k v] info]
       (println (space-key k longest-key) v))))
 
-(defn apps:open [])
+(defn apps:open []
+  (-> (heroku/app-api)
+      (.info)
+      (.get "web_url")
+      (browse/browse-url)))
 
-(defn apps:rename [new-name])
+;; TODO: implement rename
 
 (defn apps []
   (println "= Heroku Applications")
