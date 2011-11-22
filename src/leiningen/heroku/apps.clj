@@ -13,15 +13,9 @@
   (.destroy (heroku/app-api))
   (println "Deleted app" (heroku/current-app-name)))
 
-(defn- space-key [k longest-key]
-  (apply str k ": " (repeat (- longest-key (count k)) " ")))
-
 (defn apps:info []
-  (let [info (.info (heroku/app-api))
-        longest-key (apply max (map count (keys info)))]
-    (println "==" (heroku/current-app-name))
-    (doseq [[k v] info]
-      (println (space-key k longest-key) v))))
+  (println "==" (heroku/current-app-name))
+  (heroku/print-map (.info (heroku/app-api))))
 
 (defn apps:open []
   (-> (heroku/app-api)

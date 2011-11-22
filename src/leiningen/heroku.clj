@@ -12,6 +12,14 @@
   (catch Exception _
     (use '[leiningen.main :only [abort]])))
 
+(defn- space-key [k longest-key]
+  (apply str k ": " (repeat (- longest-key (count k)) " ")))
+
+(defn print-map [m]
+  (let [longest-key (apply max (map count (keys m)))]
+    (doseq [[k v] m]
+      (println (space-key k longest-key) v))))
+
 (defn- read-password []
   (.readPassword (System/console) "%s" (into-array ["Password: "])))
 
