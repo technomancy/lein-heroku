@@ -1,5 +1,5 @@
 (ns leiningen.heroku.config
-  (:require [leiningen.heroku :as heroku])
+  (:require [leiningen.heroku.util :as util])
   (:import (com.google.gson Gson)))
 
 (defn config:add [configs]
@@ -7,12 +7,12 @@
        (map #(vec (.split % "=")))
        (into {})
        (.toJson (Gson.))
-       (.addConfig (heroku/app-api))))
+       (.addConfig (util/app-api))))
 
 (defn config:remove [& keys]
-  (let [api (heroku/app-api)]
+  (let [api (util/app-api)]
     (doseq [k keys]
       (.removeConfig api))))
 
 (defn config []
-  (heroku/print-map (.listConfig (heroku/app-api))))
+  (util/print-map (.listConfig (util/app-api))))
