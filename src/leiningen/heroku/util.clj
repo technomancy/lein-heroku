@@ -4,8 +4,10 @@
            (com.heroku.api.connection HttpClientConnection)
            (com.heroku.api HerokuAPI)))
 
+(def ^{:dynamic true} *app* nil)
+
 (defn- space-key [k longest-key]
-  (apply str k ": " (repeat (- longest-key (count k)) " ")))
+  (apply str k ":" (repeat (- longest-key (count k)) " ")))
 
 (defn print-map [m]
   (let [longest-key (apply max (map count (keys m)))]
@@ -41,11 +43,11 @@
         (HerokuAPI/with))))
 
 (defn current-app-name []
-  ;; TODO: depends on current directory; should we pass project args around?
-  (->> (io/file "/home/phil/src/clojars" ".git/config")
-       slurp
-       (re-find #"git@heroku.com:(.+).git")
-       second))
+  (or *app*
+      (->> (io/file ".git/config")
+           slurp
+           (re-find #"git@heroku.com:(.+).git")
+           second)))
 
 (defn app-api []
   (.app (api) (current-app-name)))
