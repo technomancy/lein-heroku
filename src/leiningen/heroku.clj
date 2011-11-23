@@ -26,6 +26,7 @@ use an app that is not in the current directory, use the --app argument.
 You can get help for each individual subtask with \"lein heroku help SUBTASK\"."
   [& args]
   (let [[opts [command & args] help] (cli/cli args cli-options)
+        command (or command "help")
         command-ns (str "leiningen.heroku." (first (.split command ":")))
         _ (require (symbol command-ns))
         subtask (ns-resolve (symbol command-ns) (symbol command))]

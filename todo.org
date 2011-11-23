@@ -1,5 +1,4 @@
 * TODO
-  - [ ] help
   - [ ] login
   - [ ] keys
   - [ ] ps
