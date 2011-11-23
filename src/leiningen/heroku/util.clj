@@ -14,10 +14,7 @@
     (doseq [[k v] m]
       (println (space-key k longest-key) v))))
 
-(defn- read-password []
-  (.readPassword (System/console) "%s" (into-array ["Password: "])))
-
-(defn- credentials-file []
+(defn credentials-file []
   (io/file (System/getProperty "user.home") ".heroku" "credentials"))
 
 (defn- get-credentials []
@@ -25,18 +22,10 @@
       (slurp)
       (.split "\n")))
 
-(defn login [_ & args]
-  (println "Enter your Heroku credentials.")
-  (print "Email: ") (flush)
-  (let [email (read-line)
-        password (read-password)
-        command (BasicAuthLogin. email password)]
-    ;; TODO: save to credentials-file
-    ))
-
 (defn api []
   (when-not (.exists (credentials-file))
-    (login))
+    ;; (login)
+    )
   (let [[email key] (get-credentials)]
     (-> (BasicAuthLogin. email key)
         (HttpClientConnection.)
