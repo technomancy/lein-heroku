@@ -13,15 +13,17 @@
 (def ^{:private true} cli-options
   ["-a" "--app" "App to use if not in project dir."])
 
-(defn ^{:no-project-needed true
-        :subtasks [apps/apps:create apps/apps:destroy
+(defn ^{:no-project-needed true :help-arglists '([command & args])
+        :subtasks [apps/apps:create apps/apps:delete
                    apps/apps:info apps/apps:open apps/apps:list
                    config/config:add config/config:remove
                    config/config:list]}
   heroku
   "Manage Heroku apps.
 
-Use \"lein new heroku MYAPP\" to generate a new project skeleton."
+Use \"lein new heroku MYAPP\" to generate a new project skeleton. To
+use an app that is not in the current directory, use the --app argument.
+You can get help for each individual subtask with \"lein heroku help SUBTASK\"."
   [& args]
   (let [[opts [command & args] help] (cli/cli args cli-options)
         command-ns (str "leiningen.heroku." (first (.split command ":")))

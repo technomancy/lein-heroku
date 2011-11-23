@@ -5,19 +5,27 @@
   (:import (com.heroku.api.command.app AppList)
            (com.heroku.api Heroku$Stack)))
 
-(defn apps:create [name]
+(defn apps:create
+  "Create a new Heroku app."
+  [name]
   (let [response (-> (util/api) (.newapp Heroku$Stack/Cedar name))]
     (println "Created app" (.getAppName response))))
 
-(defn apps:destroy []
+(defn apps:delete
+  "Delete the given app."
+  []
   (.destroy (util/app-api))
   (println "Deleted app" (util/current-app-name)))
 
-(defn apps:info []
+(defn apps:info
+  "Show detailed app information."
+  []
   (println "==" (util/current-app-name))
   (util/print-map (.info (util/app-api))))
 
-(defn apps:open []
+(defn apps:open
+  "Open the app in a web browser."
+  []
   (-> (util/app-api)
       (.info)
       (.get "web_url")
@@ -25,7 +33,9 @@
 
 ;; TODO: implement rename
 
-(defn apps:list []
+(defn apps:list
+  "List all your apps."
+  []
   (println "= Heroku Applications")
   (doseq [app (-> (util/api) .apps .getData)]
     (println "*" (.get app "name"))))
