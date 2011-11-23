@@ -25,7 +25,7 @@
 
 ;; TODO: implement rename
 
-(defn apps []
+(defn apps:list []
   (println "= Heroku Applications")
   (doseq [app (-> (util/api) .apps .getData)]
     (println "*" (.get app "name"))))

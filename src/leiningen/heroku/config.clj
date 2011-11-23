@@ -14,5 +14,5 @@
     (doseq [k keys]
       (.removeConfig api))))
 
-(defn config []
+(defn config:list []
   (util/print-map (.listConfig (util/app-api))))
