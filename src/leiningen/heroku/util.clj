@@ -23,13 +23,10 @@
       (.split "\n")))
 
 (defn api []
-  (when-not (.exists (credentials-file))
-    ;; (login)
-    )
-  (let [[email key] (get-credentials)]
-    (-> (BasicAuthLogin. email key)
-        (HttpClientConnection.)
-        (HerokuAPI/with))))
+  ;; (when-not (.exists (credentials-file))
+  ;;   (login))
+  (let [[_ key] (get-credentials)]
+    (HerokuAPI/with (HttpClientConnection. key))))
 
 (defn current-app-name []
   (or *app*
