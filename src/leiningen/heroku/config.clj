@@ -21,4 +21,5 @@
 (defn config:list
   "Display the config vars for an app."
   []
-  (util/print-map (.listConfig (util/app-api))))
+  (doseq [[k v] (.listConfig (util/app-api))]
+    (println (format "%s=%s" k v))))

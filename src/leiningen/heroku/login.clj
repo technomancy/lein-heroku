@@ -6,13 +6,13 @@
 (defn- read-password []
   (.readPassword (System/console) "%s" (into-array ["Password: "])))
 
-(defn login [_ & args]
+(defn login []
   (println "Enter your Heroku credentials.")
   (print "Email: ") (flush)
   (let [email (read-line)
-        password (read-password)
+        password (String. (read-password))
         command (BasicAuthLogin. email password)
-        response nil ;; how do we get this from the login command?
+        response nil ;; API key is currently not exposed by underlying Java API
         api-key (.api_key response)]
     (with-open [w (io/writer (util/credentials-file))]
       (.write email)
