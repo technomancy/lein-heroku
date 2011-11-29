@@ -6,4 +6,6 @@
                  [com.heroku.api/heroku-httpclient "0.1-SNAPSHOT"]
                  [com.heroku.api/heroku-json-gson "0.1-SNAPSHOT"]
                  [clj-http "0.2.4"]]
-  :eval-in-leiningen true)
+  :eval-in-leiningen true
+  :repositories {"sontype-snapshots"
+                 "https://oss.sonatype.org/content/repositories/snapshots/"})

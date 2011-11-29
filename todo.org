@@ -2,7 +2,7 @@
   - [ ] login
   - [ ] keys
   - [ ] ps
-  - [ ] run
   - [ ] logs
+  - [ ] run
   - [ ] addons
   - [ ] sharing
