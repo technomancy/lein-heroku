@@ -14,7 +14,7 @@
     (doseq [[k v] m]
       (println (space-key k longest-key) v))))
 
-(defn prompt-for [prompt]
+(defn prompt [prompt]
   (print prompt)
   (flush)
   (let [response (read-line)]

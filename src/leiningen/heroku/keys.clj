@@ -3,7 +3,7 @@
             [clojure.java.io :as io]
             [clojure.string :as string]))
 
-(defn- local-keys []
+(defn local-keys []
   (filter #(.endsWith % ".pub")
           (.list (io/file (System/getProperty "user.home") ".ssh"))))
 
@@ -12,7 +12,7 @@
     (slurp key)
     (slurp (io/file (System/getProperty "user.home") ".ssh" key))))
 
-(defn- remote-keys []
+(defn remote-keys []
   ;; TODO: will this be exposed on HerokuAPI object?
   (-> (util/get-credentials)
       (second)
@@ -39,7 +39,7 @@ will search in $HOME/.ssh and prompt for each."
          (println (or (.getMessage e) e)))))
   ([]
      (doseq [key (local-keys)]
-       (when (util/prompt-for (format "Found key %s. Add? [Y/n] " key))
+       (when (util/prompt (format "Found key %s. Add? [Y/n] " key))
          (keys:add key)))))
 
 (defn keys:remove
@@ -57,7 +57,7 @@ will list all uploaded keys and prompt for removal of each."
   ([]
      (doseq [key (remote-keys)
              :let [comment (key-comment (get key "contents"))]]
-       (when (util/prompt-for (format "Found key %s. Remove? [Y/n] " comment))
+       (when (util/prompt (format "Found key %s. Remove? [Y/n] " comment))
          (keys:remove comment)))))
 
 (defn keys:list
