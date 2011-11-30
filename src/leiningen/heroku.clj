@@ -2,6 +2,8 @@
   (:require [leiningen.help :as help]
             [leiningen.heroku.apps :as apps]
             [leiningen.heroku.config :as config]
+            [leiningen.heroku.keys :as keys]
+            [leiningen.heroku.login :as login]
             [leiningen.heroku.util :as util]
             [clojure.tools.cli :as cli]))
 
@@ -17,7 +19,8 @@
         :subtasks [apps/apps:create apps/apps:delete
                    apps/apps:info apps/apps:open apps/apps:list
                    config/config:add config/config:remove
-                   config/config:list]}
+                   config/config:list login/login
+                   keys/keys:add keys/keys:remove keys/keys:list]}
   heroku
   "Manage Heroku apps.
 
