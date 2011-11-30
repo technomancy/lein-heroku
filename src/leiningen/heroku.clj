@@ -4,6 +4,7 @@
             [leiningen.heroku.config :as config]
             [leiningen.heroku.keys :as keys]
             [leiningen.heroku.login :as login]
+            [leiningen.heroku.logs :as logs]
             [leiningen.heroku.util :as util]
             [clojure.tools.cli :as cli]))
 
@@ -19,7 +20,7 @@
         :subtasks [apps/apps:create apps/apps:delete
                    apps/apps:info apps/apps:open apps/apps:list
                    config/config:add config/config:remove
-                   config/config:list login/login
+                   config/config:list login/login logs/logs
                    keys/keys:add keys/keys:remove keys/keys:list]}
   heroku
   "Manage Heroku apps.

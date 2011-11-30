@@ -1,6 +1,7 @@
 * TODO
   - [ ] ps
-  - [ ] logs
-  - [ ] run
+  - [ ] list apps (needs heroku-api support, currently only XML)
+  - [ ] log tailing (needs heroku-api support)
+  - [ ] run (needs heroku-api support)
   - [ ] addons
   - [ ] sharing
