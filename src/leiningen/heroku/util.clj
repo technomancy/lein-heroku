@@ -14,6 +14,14 @@
     (doseq [[k v] m]
       (println (space-key k longest-key) v))))
 
+(defn prompt-for [prompt]
+  (print prompt)
+  (flush)
+  (let [response (read-line)]
+    (or (empty? response)
+        (.startsWith response "y")
+        (.startsWith response "Y"))))
+
 (defn credentials-file []
   (io/file (System/getProperty "user.home") ".heroku" "credentials"))
 
