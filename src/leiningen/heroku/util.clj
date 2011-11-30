@@ -25,7 +25,7 @@
 (defn credentials-file []
   (io/file (System/getProperty "user.home") ".heroku" "credentials"))
 
-(defn- get-credentials []
+(defn get-credentials []
   (-> (credentials-file)
       (slurp)
       (.split "\n")))

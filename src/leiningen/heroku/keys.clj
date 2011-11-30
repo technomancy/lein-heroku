@@ -45,3 +45,18 @@ will search in $HOME/.ssh and prompt for each."
        ;; TODO: should really list keys from API, not locally.
        (doseq [key (discover-keys)]
          (keys:remove key)))))
+
+(defn keys:list
+  "Display keys for the current user."
+  []
+  ;; TODO: will this be exposed on HerokuAPI?
+  (let [[email key] (util/get-credentials)
+        connection (com.heroku.api.connection.HttpClientConnection. key)
+        response (.execute connection (com.heroku.api.request.key.KeyList.))]
+    (println "=== Keys for" email)
+    (doseq [key (.getData response)
+            :let [[type key comment] (.split (get key "contents") " ")
+                  summary (str (apply str (take 10 key)) "..."
+                               (apply str (drop (- (count key) 10) key)))]]
+      (println (format "%s %s %s"
+                       type summary comment)))))
