@@ -3,9 +3,8 @@
   :dependencies [[lein-newnew "0.1.2"]
                  [org.clojure/tools.cli "0.2.1"]
                  [com.heroku.api/heroku-api "0.1-SNAPSHOT"]
-                 [com.heroku.api/heroku-httpclient "0.1-SNAPSHOT"]
-                 [com.heroku.api/heroku-json-gson "0.1-SNAPSHOT"]
-                 [clj-http "0.2.4"]]
+                 [com.heroku.api/heroku-http-apache "0.1-SNAPSHOT"]
+                 [com.heroku.api/heroku-json-gson "0.1-SNAPSHOT"]]
   :eval-in-leiningen true
   :repositories {"sontype-snapshots"
                  "https://oss.sonatype.org/content/repositories/snapshots/"})
