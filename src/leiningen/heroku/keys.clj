@@ -1,6 +1,7 @@
 (ns leiningen.heroku.keys
   (:require [leiningen.heroku.util :as util]
-            [clojure.java.io :as io]))
+            [clojure.java.io :as io]
+            [clojure.string :as string]))
 
 (defn- discover-keys []
   (filter #(.endsWith % ".pub")
@@ -18,9 +19,10 @@ will search in $HOME/.ssh and prompt for each."
      (doseq [key (cons key keys)]
        (keys:add key)))
   ([key]
-     (try (.addKey (util/api) (read-key key))
-          (catch Exception e
-            (println (.getMessage e)))))
+     (try
+       (.addKey (util/api) (read-key key))
+       (catch Exception e
+         (println (or (.getMessage e) e)))))
   ([]
      (doseq [key (discover-keys)]
        (when (util/prompt-for (format "Found key %s. Add? [Y/n] " key))
@@ -34,9 +36,10 @@ will search in $HOME/.ssh and prompt for each."
        (keys:remove key)))
   ([key]
      (println (format "Removing %s." key))
-     (try (.removeKey (util/api) key)
-          (catch Exception e
-            (println (.getMessage e)))))
+     (try
+       (.removeKey (util/api) (string/trim (last (.split (read-key key) " "))))
+       (catch Exception e
+         (println (or (.getMessage e) e)))))
   ([]
      (when (util/prompt-for "Remove all keys? ")
        ;; TODO: should really list keys from API, not locally.
