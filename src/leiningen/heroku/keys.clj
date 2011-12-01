@@ -13,12 +13,7 @@
     (slurp (io/file (System/getProperty "user.home") ".ssh" key))))
 
 (defn remote-keys []
-  ;; TODO: will this be exposed on HerokuAPI object?
-  (-> (util/get-credentials)
-      (second)
-      (com.heroku.api.connection.HttpClientConnection.)
-      (.execute (com.heroku.api.request.key.KeyList.))
-      (.getData)))
+  (.getData (util/execute (com.heroku.api.request.key.KeyList.))))
 
 (defn- key-comment [key]
   (let [contents (try (read-key key)

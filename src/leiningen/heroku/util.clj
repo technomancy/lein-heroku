@@ -45,3 +45,9 @@
 
 (defn app-api []
   (.app (api) (current-app-name)))
+
+;; TODO: anything using this should be exposed as a method on HerokuAPI?
+(defn execute [command]
+  (-> (second (get-credentials))
+      (com.heroku.api.connection.HttpClientConnection.)
+      (.execute command)))
