@@ -31,8 +31,10 @@
       (.split "\n")))
 
 (defn api []
-  ;; (when-not (.exists (credentials-file))
-  ;;   (login))
+  (when-not (.exists (credentials-file))
+    ;; using runtime resolve to avoid circular dependency
+    (require 'leiningen.heroku.login)
+    ((resolve 'leiningen.heroku.login/login)))
   (let [[_ key] (get-credentials)]
     (HerokuAPI/with (HttpClientConnection. key))))
 
