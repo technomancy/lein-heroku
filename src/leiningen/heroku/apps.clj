@@ -1,21 +1,33 @@
 (ns leiningen.heroku.apps
-  (:require [clojure.java.shell]
+  (:require [clojure.java.shell :as sh]
             [clojure.java.browse :as browse]
+            [clojure.java.io :as io]
             [clojure.xml :as xml]
             [leiningen.heroku.util :as util]
             [doric.core :as doric])
   (:import (com.heroku.api.command.app AppList)
            (com.heroku.api Heroku$Stack)))
 
+(defn- add-git-remote [name]
+  (when (not (.exists (io/file ".git")))
+    (sh/sh "git" "init"))
+  (when (pos? (:exit (sh/sh "git" "remote" "show" "heroku")))
+    (let [remote (format "git@heroku.com:%s.git" name)]
+      (sh/sh "git" "remote" "add" "heroku" remote)
+      remote)))
+
 (defn apps:create
   "Create a new Heroku app."
-  [name]
+  [name] ;; TODO: infer app name from project.clj
   (let [response (-> (util/api) (.newapp Heroku$Stack/Cedar name))]
-    (println "Created app" (.getAppName response))))
+    (println "Created app" (.getAppName response))
+    (let [remote (add-git-remote name)]
+      (println "Added git remote:" remote))))
 
 (defn apps:delete
   "Delete the given app."
   []
+  ;; TODO: confirmation!
   (.destroy (util/app-api))
   (println "Deleted app" (util/current-app-name)))
 
