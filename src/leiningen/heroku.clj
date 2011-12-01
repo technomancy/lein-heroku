@@ -17,6 +17,23 @@
 (def ^{:private true} cli-options
   ["-a" "--app" "App to use if not in project dir."])
 
+(defn- task-not-found [& _]
+  (abort "That's not a task. Use \"lein heroku help\" to list all subtasks."))
+
+;; like leiningen.core, but with special subtask handling for colon-grouping
+(defn- resolve-task
+  ([task not-found]
+     (let [task-ns (symbol (str "leiningen.heroku." (first (.split task ":"))))
+           task (symbol task)]
+       (try
+         (when-not (find-ns task-ns)
+           (require task-ns))
+         (or (ns-resolve task-ns task)
+             not-found)
+         (catch java.io.FileNotFoundException e
+           not-found))))
+  ([task] (resolve-task task #'task-not-found)))
+
 ;; TODO: re-jigger help so that every subtask doesn't need to be required here
 (defn ^{:no-project-needed true :help-arglists '([command & args])
         :subtasks [#'apps/apps:create #'apps/apps:delete
@@ -36,12 +53,9 @@ Use \"lein new heroku MYAPP\" to generate a new project skeleton."
 
   [& args]
   (let [[opts [command & args] help] (cli/cli args cli-options)
-        command (or command "help")
-        command-ns (str "leiningen.heroku." (first (.split command ":")))
-        _ (require (symbol command-ns))
-        subtask (ns-resolve (symbol command-ns) (symbol command))]
+        subtask (resolve-task (or command "help"))]
     (try
       (binding [util/*app* (:app opts)]
         (apply subtask args))
       (catch Exception e
-        (abort (.getMessage e))))))
+        (abort (or (.getMessage e) (pr e)))))))
