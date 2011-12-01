@@ -4,7 +4,7 @@ A Leiningen plugin for managing your Heroku apps.
 
 ## Usage
 
-    $ lein plugin install lein-heroku 0.1.0-SNAPSHOT
+    $ lein plugin install lein-heroku 0.1.0
 
     $ lein heroku help
     Manage Heroku apps.

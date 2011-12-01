@@ -1,4 +1,4 @@
-(defproject lein-heroku "0.1.0-SNAPSHOT"
+(defproject lein-heroku "0.1.0"
   :description "Heroku plugin for Leiningen"
   :dependencies [[lein-newnew "0.1.2"]
                  [org.clojure/tools.cli "0.2.1"]
