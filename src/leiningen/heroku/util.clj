@@ -26,17 +26,15 @@
   (io/file (System/getProperty "user.home") ".heroku" "credentials"))
 
 (defn get-credentials []
-  (-> (credentials-file)
-      (slurp)
-      (.split "\n")))
+  (let [cred (credentials-file)]
+    (when-not (.exists cred)
+      ;; using runtime resolve to avoid circular dependency
+      (require 'leiningen.heroku.login)
+      ((resolve 'leiningen.heroku.login/login)))
+    (.split (slurp cred) "\n")))
 
 (defn api []
-  (when-not (.exists (credentials-file))
-    ;; using runtime resolve to avoid circular dependency
-    (require 'leiningen.heroku.login)
-    ((resolve 'leiningen.heroku.login/login)))
-  (let [[_ key] (get-credentials)]
-    (HerokuAPI/with (HttpClientConnection. key))))
+  (HerokuAPI/with (HttpClientConnection. (second (get-credentials)))))
 
 (defn current-app-name []
   (or *app*
