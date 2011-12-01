@@ -28,8 +28,10 @@
       key)
     (generate-key)))
 
-(defn login []
-  (println "Enter your Heroku credentials.")
+(defn login
+  "Log in with your Heroku credentials."
+  []
+  (println "Enter your Heroku account credentials.")
   (print "Email: ") (flush)
   (let [email (read-line)
         password (String. (read-password))

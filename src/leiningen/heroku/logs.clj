@@ -11,8 +11,10 @@
         (Thread/sleep 100)
         (recur (.read reader buffer))))))
 
-(defn logs []
+(defn logs
+  "Display recent log output."
+  []
   (with-open [stream (-> (util/app-api) .getLogChunk .openStream)]
     (pump (io/reader stream) *out*)))
 
-;; TODO: support tailing
+;; TODO: support tailing, number of lines, specific processes

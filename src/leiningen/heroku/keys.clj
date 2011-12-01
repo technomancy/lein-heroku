@@ -22,8 +22,9 @@
     (string/trim (last (.split contents " ")))))
 
 (defn keys:add
-  "Add the given SSH key or keys to your account. If no keys are given,
-will search in $HOME/.ssh and prompt for each."
+  "Add the given SSH key or keys to your account.
+
+If no keys are given, will search in $HOME/.ssh and prompt for each."
   ([key & keys]
      (doseq [key (cons key keys)]
        (keys:add key)))
@@ -38,8 +39,9 @@ will search in $HOME/.ssh and prompt for each."
          (keys:add key)))))
 
 (defn keys:remove
-  "Remove the given SSH key or keys from your account. If no keys are given,
-will list all uploaded keys and prompt for removal of each."
+  "Remove the given SSH key or keys from your account.
+
+If no keys are given, will prompt for removal of each uploaded key."
   ([key & keys]
      (doseq [key (cons key keys)]
        (keys:remove key)))

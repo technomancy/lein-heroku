@@ -5,6 +5,7 @@
             [leiningen.heroku.keys :as keys]
             [leiningen.heroku.login :as login]
             [leiningen.heroku.logs :as logs]
+            [leiningen.heroku.ps :as ps]
             [leiningen.heroku.util :as util]
             [clojure.tools.cli :as cli]))
 
@@ -16,18 +17,23 @@
 (def ^{:private true} cli-options
   ["-a" "--app" "App to use if not in project dir."])
 
+;; TODO: re-jigger help so that every subtask doesn't need to be required here
 (defn ^{:no-project-needed true :help-arglists '([command & args])
-        :subtasks [apps/apps:create apps/apps:delete
-                   apps/apps:info apps/apps:open apps/apps:list
-                   config/config:add config/config:remove
-                   config/config:list login/login logs/logs
-                   keys/keys:add keys/keys:remove keys/keys:list]}
+        :subtasks [#'apps/apps:create #'apps/apps:delete
+                   #'apps/apps:info #'apps/apps:open #'apps/apps:list
+                   #'config/config:add #'config/config:remove
+                   #'config/config:list
+                   #'keys/keys:add #'keys/keys:remove #'keys/keys:list
+                   #'login/login #'logs/logs
+                   #'ps/ps #'ps/ps:restart #'ps/ps:scale]}
   heroku
   "Manage Heroku apps.
 
-Use \"lein new heroku MYAPP\" to generate a new project skeleton. To
-use an app that is not in the current directory, use the --app argument.
-You can get help for each individual subtask with \"lein heroku help SUBTASK\"."
+To invoke a task on an app that is not in the current directory, use
+the --app argument.
+
+Use \"lein new heroku MYAPP\" to generate a new project skeleton."
+
   [& args]
   (let [[opts [command & args] help] (cli/cli args cli-options)
         command (or command "help")

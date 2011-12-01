@@ -1,4 +1,5 @@
 * TODO
+  - [ ] add git remote upon create
   - [ ] log tailing (needs heroku-api support)
   - [ ] run (needs heroku-api support)
   - [ ] ps:restart for specified processes (needs heroku-api support)

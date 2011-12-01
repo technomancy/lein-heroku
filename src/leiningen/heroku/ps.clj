@@ -26,11 +26,11 @@
                         (map parse (list-processes (util/current-app-name))))))
 
 (defn ps:restart
-  "Restart all processess for an app.
-
-TODO: implement restarting only specified processes."
+  "Restart all processess for an app."
   ([process]
-     (util/execute (Restart. (util/current-app-name) process)))
+     (println "TODO: implement restarting only specified processes.")
+     ;; (util/execute (Restart. (util/current-app-name) process))
+     )
   ([process & processes]
      (doseq [process (cons process processes)]
        (ps:restart process)))
@@ -41,7 +41,9 @@ TODO: implement restarting only specified processes."
      (println "done.")))
 
 (defn ps:scale
-  "scale processes by the given amount"
+  "Scale processes by the given amount.
+
+Usage: lein heroku ps:scale web=3 swank=0"
   ([type-and-quantity]
      (let [app (util/current-app-name)
            [type quantity] (.split type-and-quantity "=")]
