@@ -27,9 +27,15 @@
 (defn apps:delete
   "Delete the given app."
   []
-  ;; TODO: confirmation!
-  (.destroy (util/app-api))
-  (println "Deleted app" (util/current-app-name)))
+  (let [name (util/current-app-name)]
+    (println " !    WARNING: Potentially Destructive Action.")
+    (println " !    This command will affect the app:" name)
+    (println " !    To proceed, type" name)
+    (print "> ")
+    (flush)
+    (when (= name (read-line))
+      (.destroy (.app (util/api) name))
+      (println "Deleted app" name))))
 
 (defn apps:info
   "Show detailed app information."
