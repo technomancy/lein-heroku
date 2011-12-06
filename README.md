@@ -2,6 +2,11 @@
 
 A Leiningen plugin for managing your Heroku apps.
 
+This is provided as an experimental alternate method to perform
+Heroku tasks; it is not intended as an official replacement for the
+["heroku"](https://github.com/heroku/heroku) command-line client since
+it only exposes a subset of the functionality.
+
 ## Usage
 
     $ lein plugin install lein-heroku 0.1.0
@@ -36,6 +41,6 @@ A Leiningen plugin for managing your Heroku apps.
 
 ## License
 
-Copyright © 2011 Heroku Inc.
+Copyright © 2011 Phil Hagelberg
 
 Distributed under the Eclipse Public License, the same as Clojure.
