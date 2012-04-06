@@ -1,12 +1,12 @@
 (ns {{name}}.web
-  (:use [ring.adapter.jetty :only [run-jetty]]))
+  (:require [ring.adapter.jetty :as jetty]))
 
 (defn app [req]
   {:status 200
    :headers {"Content-Type" "text/plain"}
-   :body "Hello, world"})
+   :body (pr-str ["Hello" :from 'Heroku])})
 
 (defn -main []
   (let [port (Integer/parseInt (System/getenv "PORT"))]
-    (run-jetty app {:port port})))
+    (jetty/run-jetty app {:port port})))
 
