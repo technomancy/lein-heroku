@@ -6,7 +6,7 @@ A Heroku web app.
 
 To start a web server
 
-    $ PORT=5000 lein run -m {{name}}.web
+    $ lein run -m {{name}}.web
 
 ## License
 
