@@ -2,38 +2,41 @@
   (:require [compojure.core :refer [defroutes GET PUT POST DELETE ANY]]
             [compojure.handler :refer [site]]
             [ring.middleware.stacktrace :as trace]
+            [ring.middleware.session :as session]
+            [ring.middleware.session.cookie :as cookie]
             [ring.adapter.jetty :as jetty]
             [ring.middleware.basic-authentication :as basic]
             [cemerick.drawbridge :as drawbridge]
-            [environ.core :as env]))
+            [environ.core :refer [env]]))
+
+(defn- authenticated? [user pass]
+  ;; TODO: heroku config:add REPL_USER=[...] REPL_PASSWORD=[...]
+  (= [user pass] [(env :repl-user false) (env :repl-password false)]))
+
+(def ^:private drawbridge
+  (-> (drawbridge/ring-handler)
+      (session/wrap-session)
+      (basic/wrap-basic-authentication authenticated?)))
 
 (defroutes app
+  (ANY "/repl" {:as req}
+       (drawbridge req))
   (GET "/" []
        {:status 200
         :headers {"Content-Type" "text/plain"}
         :body (pr-str ["Hello" :from 'Heroku])}))
 
-(defn authenticated? [name pass]
-  (= [name pass] [(System/getenv "AUTH_USER") (System/getenv "AUTH_PASS")]))
-
-(defn wrap-drawbridge [handler]
-  (fn [req]
-    (let [handler (if (= "/repl" (:uri req))
-                    (basic/wrap-basic-authentication
-                     cemerick.drawbridge/ring-handler authenticated?)
-                    handler)]
-      (handler req))))
-
 (defn -main [& [port]]
-  (let [port (Integer. (or port (env/env :port) 5000))]
-    (jetty/run-jetty (-> app
-                         (wrap-drawbridge)
-                         ((if (env/env :dev)
+  (let [port (Integer. (or port (env :port) 5000))
+        ;; TODO: heroku config:add SESSION_SECRET=$RANDOM_16_CHARS
+        store (cookie/cookie-store {:key (env :session-secret)})]
+    (jetty/run-jetty (-> #'app
+                         ((if (env :dev)
                             trace/wrap-stacktrace
                             identity))
-                         (site))
+                         (site {:session {:store store}}))
                      {:port port :join? false})))
 
 ;; For interactive development:
-;; (.stop)
+;; (.stop server)
 ;; (def server (-main))
