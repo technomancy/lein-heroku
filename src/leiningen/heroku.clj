@@ -12,7 +12,7 @@
 (try ; Leiningen 2.0 compatibility
   (use '[leiningen.core :only [abort]])
   (catch Exception _
-    (use '[leiningen.main :only [abort]])))
+    (use '[leiningen.core.main :only [abort]])))
 
 (def ^{:private true} cli-options
   ["-a" "--app" "App to use if not in project dir."])
