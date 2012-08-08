@@ -1,6 +1,8 @@
 (ns {{name}}.web
   (:require [compojure.core :refer [defroutes GET PUT POST DELETE ANY]]
             [compojure.handler :refer [site]]
+            [compojure.route :as route]
+            [clojure.java.io :as io]
             [ring.middleware.stacktrace :as trace]
             [ring.middleware.session :as session]
             [ring.middleware.session.cookie :as cookie]
@@ -24,16 +26,26 @@
   (GET "/" []
        {:status 200
         :headers {"Content-Type" "text/plain"}
-        :body (pr-str ["Hello" :from 'Heroku])}))
+        :body (pr-str ["Hello" :from 'Heroku])})
+  (ANY "*" []
+       (route/not-found (slurp (io/resource "404.html")))))
+
+(defn wrap-error-page [handler]
+  (fn [req]
+    (try (handler req)
+         (catch Exception e
+           {:status 500
+            :headers {"Content-Type" "text/html"}
+            :body (slurp (io/resource "500.html"))}))))
 
 (defn -main [& [port]]
   (let [port (Integer. (or port (env :port) 5000))
         ;; TODO: heroku config:add SESSION_SECRET=$RANDOM_16_CHARS
         store (cookie/cookie-store {:key (env :session-secret)})]
     (jetty/run-jetty (-> #'app
-                         ((if (env :dev)
-                            trace/wrap-stacktrace
-                            identity))
+                         ((if (env :production)
+                            wrap-error-page
+                            trace/wrap-stacktrace))
                          (site {:session {:store store}}))
                      {:port port :join? false})))
 
