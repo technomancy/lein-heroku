@@ -2,7 +2,7 @@
   (:require [leiningen.new.templates :as t]))
 
 (defn heroku
-  "Generate a new Heroku web application."
+  "Generate a new Compojure project for use on Heroku."
   [name]
   (let [render (t/renderer "heroku")
         data {:name name

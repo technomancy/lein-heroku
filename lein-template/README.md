@@ -1,6 +1,13 @@
 # heroku
 
-A Leiningen template for Heroku apps.
+A Leiningen template for Heroku apps using Heroku.
+
+The generated project has a few basics set up beyond the bare Compojure defaults:
+
+* Cookie-backed session store
+* Stack traces when in development
+* Environment-based config via [enviorn](https://github.com/weavejester/environ)
+* [HTTP-based REPL debugging](https://devcenter.heroku.com/articles/debugging-clojure) via [drawbridge](https://github.com/cemerick/drawbridge)
 
 ## Usage
 
@@ -12,6 +19,8 @@ A Leiningen template for Heroku apps.
     $ git commit -m "Initial commit"
     $ git push heroku master
     $ curl http://myapp.herokuapp.com
+
+See the [README of the generated project](https://github.com/technomancy/lein-heroku/blob/master/lein-template/src/leiningen/new/heroku/README.md) for details.
 
 ## License
 
