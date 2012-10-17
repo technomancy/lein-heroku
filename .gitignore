@@ -7,3 +7,5 @@
 /checkouts
 /.lein-deps-sum
 /target
+/lein-template/pom.xml.asc
+/lein-template-ring/pom.xml.asc

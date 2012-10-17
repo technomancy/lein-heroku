@@ -1,6 +1,6 @@
-# heroku
+# Heroku Leiningen Template
 
-A Leiningen template for Heroku apps using Heroku.
+A Leiningen template for Compojure web apps using Heroku.
 
 The generated project has a few basics set up beyond the bare Compojure defaults:
 
