@@ -6,7 +6,7 @@ This generated project has a few basics set up beyond the bare Compojure default
 
 * Cookie-backed session store
 * Stack traces when in development
-* Environment-based config via [enviorn](https://github.com/weavejester/environ)
+* Environment-based config via [environ](https://github.com/weavejester/environ)
 * [HTTP-based REPL debugging](https://devcenter.heroku.com/articles/debugging-clojure) via [drawbridge](https://github.com/cemerick/drawbridge)
 
 ## Usage
@@ -51,7 +51,7 @@ You can deploy the skeleton project immediately:
 
 It's live! Hit it with `curl`:
 
-    $ curl http://{{name}}.herokuap.com
+    $ curl http://{{name}}.herokuapp.com
     ["Hello" :from Heroku]
 
 The cookie-backed session store needs a session secret configured for encryption:
@@ -69,7 +69,7 @@ step is setting up credentials:
 
 Then you can launch the REPL:
 
-    $ lein repl :connect http://$REPL_USER:$REPL_PASSWORD@myapp.herokuapp.com/repl
+    $ lein repl :connect http://$REPL_USER:$REPL_PASSWORD@{{name}}.herokuapp.com/repl
 
 Everything you enter will be evaluated remotely in the running dyno,
 which can be very useful for debugging or inspecting live data.
