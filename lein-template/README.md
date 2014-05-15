@@ -20,10 +20,10 @@ The generated project has a few basics set up beyond the bare Compojure defaults
     $ git push heroku master
     $ curl http://myapp.herokuapp.com
 
-See the [README of the generated project](https://github.com/technomancy/lein-heroku/blob/master/lein-template/src/leiningen/new/heroku/README.md) for details.
+See the [README of the generated project](https://github.com/technomancy/lein-heroku/blob/master/lein-template/resources/leiningen/new/heroku/README.md) for details.
 
 ## License
 
-Copyright © 2012 Heroku
+Copyright © 2012-2014 Heroku
 
 Distributed under the Eclipse Public License, the same as Clojure.

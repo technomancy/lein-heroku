@@ -1,1 +1,1 @@
-web: lein with-profile production trampoline run -m {{name}}.web
+web: java $JVM_OPTS -cp target/{{name}}-standalone.jar clojure.main -m {{name}}.web
