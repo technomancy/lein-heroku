@@ -1,4 +1,4 @@
-(defproject heroku/lein-template "0.4.0-SNAPSHOT"
+(defproject heroku/lein-template "0.4.0"
   :description "Template for new Heroku Compojure web apps."
   :url "https://github.com/technomancy/lein-heroku"
   :license {:name "Eclipse Public License"
