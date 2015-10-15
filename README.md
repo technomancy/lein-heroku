@@ -1,3 +1,5 @@
+**DEPRECATED**: Please see [heroku/lein-heroku](https://github.com/heroku/lein-heroku)
+
 # lein-heroku
 
 A Leiningen plugin for managing your Heroku apps.
